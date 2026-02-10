@@ -1,131 +1,108 @@
-/* Fundo geral */
+/* Fundo e fonte */
 body {
-    background: radial-gradient(circle at top, #1f2937, #0f172a);
-    font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+    background-color: #1f2937;
+    font-family: "Inter", "Segoe UI", sans-serif;
     color: #e5e7eb;
+    text-align: center;
 }
 
 /* Container */
 .container {
-    max-width: 820px;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
 }
 
-/* Centralização geral */
-h2, p {
-    text-align: center;
-}
-
-/* Card do formulário */
+/* Formulário */
 form {
-    background: rgba(15, 23, 42, 0.9);
-    padding: 26px;
-    border-radius: 18px;
-    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background-color: #111827;
+    padding: 20px;
+    border-radius: 12px;
 }
 
 /* Labels */
 .form-label {
     color: #e5e7eb;
     font-weight: 600;
-    text-align: center;
     display: block;
+    margin-bottom: 6px;
 }
 
 /* Inputs */
 .form-control {
-    background-color: #020617;
-    border: 1px solid #334155;
+    background-color: #1f2937;
+    border: 1px solid #374151;
     color: #e5e7eb;
-    border-radius: 12px;
+    border-radius: 8px;
+    padding: 8px;
     text-align: center;
 }
 
 .form-control::placeholder {
-    color: #94a3b8;
+    color: #9ca3af;
 }
 
 .form-control:focus {
-    background-color: #020617;
-    color: #fff;
     border-color: #6366f1;
-    box-shadow: 0 0 0 0.25rem rgba(99, 102, 241, 0.35);
+    box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.25);
 }
 
-/* Botões */
+/* Botões do formulário */
 .btn {
-    border-radius: 14px;
-    font-weight: 500;
+    border-radius: 8px;
+    padding: 6px 16px;
 }
 
 /* Botão salvar */
 .btn-primary {
-    background: linear-gradient(135deg, #6366f1, #4338ca);
+    background-color: #6366f1;
     border: none;
+    color: #fff;
 }
 
 .btn-primary:hover {
-    background: linear-gradient(135deg, #4f46e5, #3730a3);
+    background-color: #4f46e5;
 }
 
 /* Botão cancelar */
 .btn-secondary {
-    background-color: #1e293b;
-    border: 1px solid #334155;
+    background-color: #374151;
+    border: none;
     color: #e5e7eb;
 }
 
 .btn-secondary:hover {
-    background-color: #334155;
+    background-color: #4b5563;
 }
 
-/* Lista */
+/* Lista de tarefas */
 .list-group {
-    margin-top: 30px;
+    margin-top: 20px;
+    padding: 0;
 }
 
 /* Item da tarefa */
 .list-group-item {
-    position: relative;
-    border: none;
-    border-radius: 16px;
-    margin-bottom: 16px;
-    padding: 18px 22px;
-    background: linear-gradient(135deg, #020617, #020617);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+    background-color: #111827;
+    color: #e5e7eb;
+    border: 1px solid #374151;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    padding: 12px;
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
     align-items: center;
-    gap: 10px;
-    text-align: center;
-    transition: all 0.25s ease;
-}
-
-/* Barra lateral decorativa */
-.list-group-item::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    border-radius: 16px 16px 0 0;
-    background: linear-gradient(90deg, #6366f1, #22c55e);
-}
-
-/* Hover */
-.list-group-item:hover {
-    transform: translateY(-5px) scale(1.01);
-    box-shadow: 0 25px 55px rgba(0, 0, 0, 0.8);
 }
 
 /* Botões dentro da tarefa */
 .list-group-item .btn {
-    border-radius: 20px;
-    padding: 6px 18px;
+    padding: 4px 12px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    margin-left: 6px;
 }
 
-/* Apagar */
+/* Botão apagar */
 .btn-outline-danger {
     border-color: #ef4444;
     color: #ef4444;
@@ -136,7 +113,7 @@ form {
     color: #fff;
 }
 
-/* Editar */
+/* Botão editar */
 .btn-outline-primary {
     border-color: #6366f1;
     color: #6366f1;
@@ -147,9 +124,9 @@ form {
     color: #fff;
 }
 
-/* Texto vazio */
+/* Mensagem quando não há tarefas */
 p {
-    margin-top: 40px;
-    color: #94a3b8;
+    margin-top: 20px;
+    color: #9ca3af;
     font-style: italic;
 }
