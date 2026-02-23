@@ -1,28 +1,39 @@
 from sqlite3 import Connection, connect, Cursor
 from types import TracebackType
-from typing import Any, Self, Optional, Type
-from dotenv import load_dotenv
+from typing import Any, Optional, Type
 import traceback
 import os
+from dotenv import load_dotenv
 
-load_dotenv() # Procura um arquivo .env com variáveis
+load_dotenv()
 DB_PATH = os.getenv('DATABASE', './data/tarefas.sqlite3')
 
 def init_db(db_name: str = DB_PATH) -> None:
+    """Inicializa o banco de dados e garante que as colunas existam"""
     with connect(db_name) as conn:
-        conn.execute('''
+        cursor = conn.cursor()
+        # Cria a tabela se não existir
+        cursor.execute('''
         CREATE TABLE IF NOT EXISTS tarefas (
-                     id INTEGER PRIMARY KEY AUTOINCREMENT, 
-                     titulo_tarefa TEXT NOT NULL,
-                     data_conclusao TEXT
-                     
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            titulo_tarefa TEXT NOT NULL,
+            data_conclusao TEXT
         );
         ''')
+        # Verifica colunas existentes
+        cursor.execute("PRAGMA table_info(tarefas);")
+        colunas = [info[1] for info in cursor.fetchall()]
+        # Adiciona coluna concluida se não existir
+        if 'concluida' not in colunas:
+            cursor.execute("ALTER TABLE tarefas ADD COLUMN concluida INTEGER DEFAULT 0;")
+        # Adiciona coluna data_hora_conclusao se não existir
+        if 'data_hora_conclusao' not in colunas:
+            cursor.execute("ALTER TABLE tarefas ADD COLUMN data_hora_conclusao TEXT;")
+        conn.commit()
 
 class Database:
-    """
-        Classe que gerencia conexões e operaçoes com um banco de dados SQLite. Utiliza o protocolo de gerenciamento de contexto para garantir que a conexão seja encerrada corretamente.
-    """
+    """Classe para gerenciar conexões e operações com SQLite usando contexto"""
+
     def __init__(self, db_name: str = DB_PATH) -> None:
         self.connection: Connection = connect(db_name)
         self.cursor: Cursor = self.connection.cursor()
@@ -39,27 +50,16 @@ class Database:
     def close(self) -> None:
         self.connection.close()
 
-    
-    # Métodos para o gerenciamento de contexto
-    # Método de entrada no contexto
-    def __enter__(self) -> Self:
+    def __enter__(self):
         return self
     
-    # Método de saída do contexto
-    def __exit__(
-            self, 
-            exc_type: Optional[Type[BaseException]], 
-            exc_value: Optional[BaseException], 
-            tb: Optional[TracebackType]) -> None:
-        
-        if exc_type is not None:
+    def __exit__(self, exc_type: Optional[Type[BaseException]],
+                 exc_value: Optional[BaseException],
+                 tb: Optional[TracebackType]) -> None:
+        if exc_type:
             print('Exceção capturada no contexto:')
             print(f'Tipo: {exc_type.__name__}')
             print(f'Mensagem: {exc_value}')
             print('Traceback completo:')
             traceback.print_tb(tb)
-
         self.close()
-
-
-

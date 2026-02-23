@@ -1,60 +1,65 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <form class="mt-3" method="POST">
+<form class="mt-3" method="POST">
 
-        <div class="mb-3">
-            <label for="titulo-tarefa" class="form-label">Título da tarefa</label>
-            <input type="text" class="form-control" name="titulo-tarefa" id="titulo-tarefa"
-                aria-describedby="ajudaNomeTarefa" value="{{ tarefa_selecionada.titulo_tarefa if tarefa_selecionada else '' }}" required>
-            <div id="ajudaNomeTarefa" class="form-text">Use um nome de tarefa que seja descritivo.</div>
-        </div>
+    <div class="mb-3">
+        <label for="titulo-tarefa" class="form-label">Título da tarefa</label>
+        <input type="text" class="form-control" name="titulo-tarefa" id="titulo-tarefa"
+               aria-describedby="ajudaNomeTarefa"
+               value="{{ tarefa_selecionada.titulo_tarefa if tarefa_selecionada else '' }}" required>
+        <div id="ajudaNomeTarefa" class="form-text">Use um nome de tarefa que seja descritivo.</div>
+    </div>
 
-        <div class="mb-3">
-            <label for="data-conclusao" class="form-label">Data de conclusão</label>
-            <input type="date" class="form-control" name="data-conclusao" id="data-conclusao" value="{{ tarefa_selecionada.data_conclusao if tarefa_selecionada else '' }}">
-        </div>
+    <div class="mb-3">
+        <label for="data-conclusao" class="form-label">Data de conclusão</label>
+        <input type="date" class="form-control" name="data-conclusao" id="data-conclusao"
+               value="{{ tarefa_selecionada.data_conclusao if tarefa_selecionada else '' }}">
+    </div>
 
-        <button type="submit" class="btn btn-primary">Salvar</button>
-
-        {% if tarefa_selecionada %}
-            <a href="{{ url_for('agenda') }}" class="btn btn-secondary">Cancelar</a>
-        {% endif %}
-    </form>
-
-    <h2 class="my-3">Lista de Tarefas</h2>
-
-    {% if tarefas %}
-
-        <ul class="list-group list-group-flush">
-            {% for tarefa in tarefas %}
-                <li class="list-group-item d-flex justify-content-between align-items-center">{{ tarefa.titulo_tarefa }} - {{ tarefa.data_conclusao }} 
-                    <a href="{{ url_for('delete', idTarefa=tarefa.id_tarefa) }}" class="btn btn-outline-danger">🗑️ Apagar</a>
-                    <a href="{{ url_for('update', idTarefa=tarefa.id_tarefa) }}" class="btn btn-outline-primary">📝 Editar</a>
-                </li>
-            {% endfor %}
-        </ul>
-
-    {% else %}
-
-        <p>Nenhuma tarefa cadastrada</p>
-
+    <button type="submit" class="btn btn-primary">Salvar</button>
+    {% if tarefa_selecionada %}
+        <a href="{{ url_for('agenda') }}" class="btn btn-secondary">Cancelar</a>
     {% endif %}
+</form>
+
+<h2 class="my-3">Lista de Tarefas</h2>
+
+{% if tarefas %}
+<ul class="list-group list-group-flush">
+    {% for tarefa in tarefas %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+
+            {% if tarefa.concluida %}
+                <s>
+                    {{ tarefa.titulo_tarefa }} - {{ tarefa.data_conclusao }}
+                    (Concluída em: {{ tarefa.data_hora_conclusao }})
+                </s>
+                 
+            {% else %}
+                {{ tarefa.titulo_tarefa }} - {{ tarefa.data_conclusao }}
+            {% endif %}
+
+            <div>
+                {% if not tarefa.concluida %}
+                    <a href="{{ url_for('delete', idTarefa=tarefa.id_tarefa) }}" class="btn btn-outline-danger btn-sm">🗑️ Apagar</a>
+                {% else %}
+                    <a href="#" class="btn btn-outline-danger btn-sm disabled-link" title="Não é possível apagar uma tarefa concluída">🗑️ Apagar</a>
+                {% endif %}
+
+                <a href="{{ url_for('update', idTarefa=tarefa.id_tarefa) }}" class="btn btn-outline-primary btn-sm">📝 Editar</a>
+
+                {% if not tarefa.concluida %}
+                    <a href="{{ url_for('concluir', idTarefa=tarefa.id_tarefa) }}" class="btn btn-success btn-sm">✔️ Concluir</a>
+                {% else %}
+                    <a href="{{ url_for('desmarcar', idTarefa=tarefa.id_tarefa) }}" class="btn btn-warning btn-sm">↩️ Desmarcar</a>
+                {% endif %}
+            </div>
+        </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>Nenhuma tarefa cadastrada</p>
+{% endif %}
 
 {% endblock %}
-
-<!-- Métodos HTTP:
-    GET -> "pega" (recupera/obtém) as informações (READ)
-    POST -> "envia" (cadastra/inclui/adiciona) as informações (CREATE)
-    UPDATE/PATCH -> "atualiza" as informações (UPDATE)
-    DELETE -> "apaga" as informações (DELETE)
-
-    CRUD -> Create, Read, Update, Delete
--->
-
-<!-- Códigos de retorno:
-    2XX - Sucesso
-    3XX - Sucesso, mas redirecionado
-    4XX - Não encontrado (falha  na REQUISIÇÃO)
-    5XX - Erro do servidor (falha na RESPOSTA)
--->

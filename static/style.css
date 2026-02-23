@@ -1,132 +1,134 @@
-/* Fundo e fonte */
+/* ------------------ Reset básico ------------------ */
 body {
-    background-color: #1f2937;
-    font-family: "Inter", "Segoe UI", sans-serif;
-    color: #e5e7eb;
-    text-align: center;
-}
-
-/* Container */
-.container {
-    max-width: 800px;
-    margin: 0 auto;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #1a1a1a; /* Fundo escuro */
+    color: #fd0606;           /* Texto claro */
+    margin: 0;
     padding: 20px;
 }
 
-/* Formulário */
+/* ------------------ Títulos ------------------ */
+h1, h2 {
+    color: #8d7f76; /* Rosa forte */
+}
+
+/* ------------------ Formulários ------------------ */
 form {
-    background-color: #111827;
+    background-color: #2b2b2b; /* Caixa escura */
     padding: 20px;
-    border-radius: 12px;
-}
-
-/* Labels */
-.form-label {
-    color: #e5e7eb;
-    font-weight: 600;
-    display: block;
-    margin-bottom: 6px;
-}
-
-/* Inputs */
-.form-control {
-    background-color: #1f2937;
-    border: 1px solid #374151;
-    color: #e5e7eb;
     border-radius: 8px;
+    margin-bottom: 30px;
+    border: 2px solid #faf9fa;
+}
+
+label {
+    font-weight: bold;
+    color: #fe0303; /* Rosa mais claro para labels */
+}
+
+input[type="text"], input[type="date"] {
+    width: 100%;
     padding: 8px;
-    text-align: center;
+    border-radius: 4px;
+    border: 1px solid #a50a0a;
+    background-color: #1a1a1a;
+    color: #f0f0f0;
 }
 
-.form-control::placeholder {
-    color: #9ca3af;
+/* ------------------ Botões ------------------ */
+button, .btn {
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-weight: bold;
+    cursor: pointer;
 }
 
-.form-control:focus {
-    border-color: #6366f1;
-    box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.25);
-}
-
-/* Botões do formulário */
-.btn {
-    border-radius: 8px;
-    padding: 6px 16px;
-}
-
-/* Botão salvar */
+/* Botões rosa principal */
 .btn-primary {
-    background-color: #6366f1;
-    border: none;
+    background-color: #131313;
     color: #fff;
+    border: none;
 }
 
 .btn-primary:hover {
-    background-color: #4f46e5;
+    background-color: #817a78;
 }
 
-/* Botão cancelar */
 .btn-secondary {
-    background-color: #374151;
+    background-color: #999999;
+    color: #fff;
     border: none;
-    color: #e5e7eb;
 }
 
-.btn-secondary:hover {
-    background-color: #4b5563;
+.btn-outline-primary {
+    color: #8d150c;
+    border: 2px solid #ee2507;
+    background-color: transparent;
 }
 
-/* Lista de tarefas */
-.list-group {
-    margin-top: 20px;
-    padding: 0;
+.btn-outline-primary:hover {
+    background-color: #181716;
+    color: #fff;
 }
 
-/* Item da tarefa */
+.btn-success {
+    background-color: #00cc66;
+    color: #fff;
+    border: none;
+}
+
+.btn-warning {
+    background-color: #ffcc00;
+    color: #000;
+    border: none;
+}
+
+.btn-outline-danger {
+    color: #ff6666;
+    border: 2px solid #ff6666;
+    background-color: transparent;
+}
+
+.btn-outline-danger.disabled-link {
+    color: #888;
+    border-color: #888;
+    cursor: not-allowed;
+}
+
+/* ------------------ Lista de tarefas ------------------ */
 .list-group-item {
-    background-color: #111827;
-    color: #e5e7eb;
-    border: 1px solid #374151;
-    border-radius: 10px;
-    margin-bottom: 10px;
-    padding: 12px;
+    background-color: #2b2b2b;
+    color: #f0f0f0;
+    border: 1px solid #444;
+    margin-bottom: 5px;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-/* Botões dentro da tarefa */
-.list-group-item .btn {
-    padding: 4px 12px;
-    border-radius: 8px;
-    font-size: 0.9rem;
-    margin-left: 6px;
+.list-group-item s {
+    color: #d10808; /* Texto riscado rosa */
 }
 
-/* Botão apagar */
-.btn-outline-danger {
-    border-color: #ef4444;
-    color: #ef4444;
+/* ------------------ Links ------------------ */
+a {
+    text-decoration: none;
 }
 
-.btn-outline-danger:hover {
-    background-color: #ef4444;
-    color: #fff;
+a:hover {
+    text-decoration: underline;
 }
 
-/* Botão editar */
-.btn-outline-primary {
-    border-color: #6366f1;
-    color: #6366f1;
-}
-
-.btn-outline-primary:hover {
-    background-color: #6366f1;
-    color: #fff;
-}
-
-/* Mensagem quando não há tarefas */
-p {
-    margin-top: 20px;
-    color: #9ca3af;
-    font-style: italic;
+/* ------------------ Responsividade simples ------------------ */
+@media (max-width: 600px) {
+    body {
+        padding: 10px;
+    }
+    .list-group-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .list-group-item div {
+        margin-top: 10px;
+    }
 }
