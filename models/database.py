@@ -9,10 +9,15 @@ load_dotenv()
 DB_PATH = os.getenv('DATABASE', './data/tarefas.sqlite3')
 
 def init_db(db_name: str = DB_PATH) -> None:
-    """Inicializa o banco de dados e garante que as colunas existam"""
+    
+    data_dir = os.path.join(os.getcwd(), "data")
+
+    if not os.path.exists(data_dir):
+        os.makedirs(data_dir, exist_ok=True)
+
     with connect(db_name) as conn:
         cursor = conn.cursor()
-        # Cria a tabela se não existir
+        
         cursor.execute('''
         CREATE TABLE IF NOT EXISTS tarefas (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -20,15 +25,17 @@ def init_db(db_name: str = DB_PATH) -> None:
             data_conclusao TEXT
         );
         ''')
-        # Verifica colunas existentes
+        
         cursor.execute("PRAGMA table_info(tarefas);")
         colunas = [info[1] for info in cursor.fetchall()]
-        # Adiciona coluna concluida se não existir
+        
         if 'concluida' not in colunas:
-            cursor.execute("ALTER TABLE tarefas ADD COLUMN concluida INTEGER DEFAULT 0;")
-        # Adiciona coluna data_hora_conclusao se não existir
+            cursor.execute("ALTER TABLE tarefas ADD COLUMN concluida" 
+            " INTEGER DEFAULT 0;")
+        
         if 'data_hora_conclusao' not in colunas:
-            cursor.execute("ALTER TABLE tarefas ADD COLUMN data_hora_conclusao TEXT;")
+            cursor.execute("ALTER TABLE tarefas ADD COLUMN data_hora_conclusao" 
+            " TEXT;")
         conn.commit()
 
 class Database:

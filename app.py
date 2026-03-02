@@ -3,15 +3,12 @@ from models.tarefa import Tarefa
 from models.database import init_db
 
 app = Flask(__name__)
-init_db()  # Inicializa o banco e garante que todas as colunas existam
+init_db()  
 
-# ----------------- Home -----------------
-@app.route('/')
-def home():
-    return render_template('home.html', titulo='Home')
 
-# ----------------- Agenda -----------------
-@app.route('/agenda', methods=['GET', 'POST'])
+
+
+@app.route('/', methods=['GET', 'POST'])
 def agenda():
     if request.method == 'POST':
         titulo_tarefa = request.form['titulo-tarefa']
@@ -21,9 +18,10 @@ def agenda():
         return redirect(url_for('agenda'))
 
     tarefas = Tarefa.obter_tarefas()
-    return render_template('agenda.html', titulo='Agenda', tarefas=tarefas, tarefa_selecionada=None)
+    return render_template('agenda.html', titulo='Agenda', tarefas=tarefas, 
+    tarefa_selecionada=None)
 
-# ----------------- Atualizar tarefa -----------------
+
 @app.route('/update/<int:idTarefa>', methods=['GET', 'POST'])
 def update(idTarefa):
     tarefa_selecionada = Tarefa.id(idTarefa)
@@ -35,25 +33,27 @@ def update(idTarefa):
         return redirect(url_for('agenda'))
 
     tarefas = Tarefa.obter_tarefas()
-    return render_template('agenda.html', titulo=f'Editando a tarefa ID: {idTarefa}',
-                           tarefas=tarefas, tarefa_selecionada=tarefa_selecionada)
+    return render_template('agenda.html', 
+            titulo=f'Editando a tarefa ID: {idTarefa}',
+            tarefas=tarefas, 
+             tarefa_selecionada=tarefa_selecionada)
 
-# ----------------- Excluir tarefa -----------------
+
 @app.route('/delete/<int:idTarefa>')
 def delete(idTarefa):
     tarefa = Tarefa.id(idTarefa)
-    if not tarefa.concluida:  # Não apaga tarefas concluídas
+    if not tarefa.concluida:  
         tarefa.excluir_tarefa()
     return redirect(url_for('agenda'))
 
-# ----------------- Concluir tarefa -----------------
+
 @app.route('/concluir/<int:idTarefa>')
 def concluir(idTarefa):
     tarefa = Tarefa.id(idTarefa)
     tarefa.concluir_tarefa()
     return redirect(url_for('agenda'))
 
-# ----------------- Desmarcar tarefa -----------------
+
 @app.route('/desmarcar/<int:idTarefa>')
 def desmarcar(idTarefa):
     tarefa = Tarefa.id(idTarefa)
